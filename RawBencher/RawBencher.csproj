@@ -35,19 +35,29 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeFluent.Runtime">
-      <HintPath>..\ReferencedAssemblies\CodeFluentEntities\CodeFluent.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.Core">
+      <HintPath>..\..\aspnet\EntityFramework\test\EntityFramework.SqlServer.FunctionalTests\bin\Release\EntityFramework.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Relational">
+      <HintPath>..\..\aspnet\EntityFramework\test\EntityFramework.SqlServer.FunctionalTests\bin\Release\EntityFramework.Relational.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\aspnet\EntityFramework\test\EntityFramework.SqlServer.FunctionalTests\bin\Release\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.ConfigurationModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\aspnet\EntityFramework\test\EntityFramework.SqlServer.FunctionalTests\bin\Release\Microsoft.Framework.ConfigurationModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.DependencyInjection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\aspnet\EntityFramework\test\EntityFramework.SqlServer.FunctionalTests\bin\Release\Microsoft.Framework.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -124,10 +134,9 @@
     <Compile Include="Benchers\LLBLGenProResultsetCachingBencher.cs" />
     <Compile Include="Benchers\LLBLGenProNoChangeTrackingBencher.cs" />
     <Compile Include="Benchers\LLBLGenProNormalBencher.cs" />
-    <Compile Include="Benchers\TelerikDomainBencher.cs" />
-    <Compile Include="Benchers\TelerikFluentBencher.cs" />
     <Compile Include="BenchResult.cs" />
     <Compile Include="Benchers\PetaPocoBencher.cs" />
+    <Compile Include="Benchers\EF7Bencher.cs" />
     <Compile Include="PetaPoco.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
@@ -173,10 +182,6 @@
     <ProjectReference Include="..\OakDynamicDb.Bencher\OakDynamicDb.Bencher.csproj">
       <Project>{106ced47-76bc-477e-9fff-3e6042f874eb}</Project>
       <Name>OakDynamicDb.Bencher</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Telerik\Telerik.Bencher.Model.csproj">
-      <Project>{ddb61239-988e-41e3-b583-36eb3b0bd2b1}</Project>
-      <Name>Telerik.Bencher.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
