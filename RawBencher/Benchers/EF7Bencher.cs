@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.DependencyInjection.Fallback;
+using Microsoft.Data.Entity.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RawBencher.Benchers
 {
@@ -12,6 +11,7 @@ namespace RawBencher.Benchers
     {
         private readonly string _connectionString;
         private readonly IServiceProvider _serviceProvider;
+        private readonly MyContext _ctx;
 
         public EF7Bencher(string connectionString)
             : base(e => e.SalesOrderId, false, false)
@@ -22,16 +22,18 @@ namespace RawBencher.Benchers
                 = new ServiceCollection()
                     .AddEntityFramework()
                     .AddSqlServer()
-                    .ServiceCollection
+                    .GetInfrastructure()
                     .BuildServiceProvider();
+
+            _ctx = new MyContext(_serviceProvider, _connectionString);
         }
 
         public override SalesOrderHeader FetchIndividual(int key)
         {
-            using (var ctx = new MyContext(_serviceProvider, _connectionString))
-            {
-                return ctx.SalesOrderHeaders.AsNoTracking().Single(e => e.SalesOrderId == key);
-            }
+            //using (var ctx = new MyContext(_serviceProvider, _connectionString))
+            //{
+            return _ctx.SalesOrderHeaders.AsNoTracking().FirstOrDefault(e => e.SalesOrderId == key);
+            //}
         }
 
         public override IEnumerable<SalesOrderHeader> FetchSet()
@@ -44,7 +46,7 @@ namespace RawBencher.Benchers
 
         protected override string CreateFrameworkNameImpl()
         {
-            return "EF7!";
+            return "EF7";
         }
 
         private class MyContext : DbContext
@@ -59,18 +61,18 @@ namespace RawBencher.Benchers
 
             public DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
 
-            protected override void OnConfiguring(DbContextOptions options)
+            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
-                options.UseSqlServer(_connectionString);
+                optionsBuilder.UseSqlServer(_connectionString);
             }
 
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 modelBuilder.Entity<SalesOrderHeader>()
-                    .Key(s => s.SalesOrderId);
+                    .HasKey(s => s.SalesOrderId);
 
                 modelBuilder.Entity<SalesOrderHeader>()
-                    .ForRelational(eb => eb.Table("SalesOrderHeader", "Sales"));
+                    .ToTable("SalesOrderHeader", "Sales");
             }
         }
     }
